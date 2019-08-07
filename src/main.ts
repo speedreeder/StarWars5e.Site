@@ -34,11 +34,11 @@ axiosInstance.interceptors.response.use((response: any) => {
       store.dispatch('auth/storeAuth', response.data)
       return axiosInstance(error.config)
     }, error => {
-      return Promise.reject(error);
+      return Promise.reject(error)
     })
   }
 
-  return Promise.reject(error);
+  return Promise.reject(error)
 })
 
 Vue.prototype.$http = axiosInstance
@@ -51,6 +51,7 @@ Vue.use(VueAuthenticate, {
   tokenName: 'userName',
   tokenPrefix: 'sw5e',
   baseUrl: process.env.VUE_APP_sw5eapiurl,
+  logoutUrl: '/api/Auth/logout',
   providers: {
     google: {
       clientId: '644887359543-sl9f31k8jtcr9srs7k4k1oi4dnd4qpu9.apps.googleusercontent.com',
