@@ -10,6 +10,7 @@ import blobs from './modules/blobs'
 import classes from './modules/classes'
 import credits from './modules/credits'
 import deployments from './modules/deployments'
+import enhancedItems from './modules/enhancedItems'
 import feats from './modules/feats'
 import gear from './modules/gear'
 import monsters from './modules/monsters'
@@ -29,19 +30,7 @@ import weaponProperties from './modules/weaponProperties'
 Vue.use(Vuex)
 
 export default new Vuex.Store({
-  plugins: [createPersistedState(
-    // {
-      // storage: {
-      //   getItem: key => {
-      //     Cookies.getJSON(key)
-      //   },
-      //   setItem: (key, value) => {
-      //     Cookies.set(key, 'test', { expires: 7, path: '', secure: false })
-      //   },
-      //   removeItem: key => Cookies.remove(key)
-      // }
-    // }
-  )],
+  plugins: [createPersistedState()],
   modules: {
     archetypes,
     armor,
@@ -51,6 +40,7 @@ export default new Vuex.Store({
     classes,
     credits,
     deployments,
+    enhancedItems,
     feats,
     gear,
     monsters,

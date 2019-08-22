@@ -9,6 +9,8 @@ export default class Blobs extends VuexModule {
   starshipBlobs: { [blob: string]: string } = {}
   variantRuleBlobs: VariantRuleBlobType[] = []
   monsterBlobs: { [blob: string]: string } = {}
+  hivesBlobs: { [blob: string]: string } = {}
+  creditsBlob: string = ''
 
   @MutationAction({ mutate: ['handbookBlobs'] })
   async fetchHandbookBlobs () {
@@ -58,6 +60,25 @@ export default class Blobs extends VuexModule {
         ...this.state && (this.state as any).monsterBlobs,
         [results.data.chapterName]: results.data.contentMarkdown
       }
+    }
+  }
+
+  @MutationAction({ mutate: ['hivesBlobs'] })
+  async fetchHivesBlob (chapter: string) {
+    const results = await axios.get(`${process.env.VUE_APP_sw5eapiurl}/api/WretchedHivesRule/${chapter}.json`)
+    return {
+      hivesBlobs: {
+        ...this.state && (this.state as any).hivesBlobs,
+        [results.data.chapterName]: results.data.contentMarkdown
+      }
+    }
+  }
+
+  @MutationAction({ mutate: ['creditsBlob'] })
+  async fetchCreditsBlob () {
+    const results = await axios.get(`${process.env.VUE_APP_sw5eapiurl}/api/Credit`)
+    return {
+      creditsBlob: results.data
     }
   }
 }

@@ -1,30 +1,30 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import MainToolbar from '@/components/MainToolbar.vue'
-  import HandbookNavigation from '@/pages/Handbook/HandbookNavigation.vue'
-  import StarshipNavigation from '@/pages/Starships/StarshipNavigation.vue'
   import FragmentModal from '@/components/FragmentModal.vue'
+  import { namespace } from 'vuex-class'
+
+  const uiModule = namespace('ui')
 
   @Component({
     components: {
       MainToolbar,
-      HandbookNavigation,
-      StarshipNavigation,
       FragmentModal
     }
   })
   export default class App extends Vue {
+    @uiModule.State isDarkSide!: boolean
   }
 </script>
 
 <template lang="pug">
-  v-app
+  v-app(:dark="isDarkSide")
     MainToolbar
-    router-view(name="navigation")
     FragmentModal
-    v-content(:class="$style.content")
+    v-content(:class="[ $style.content, { [$style.darkSide]: isDarkSide } ]")
       v-container(fluid)
         router-view
+    router-view(name="navigation")
 </template>
 
 <style module lang="scss">
@@ -34,5 +34,9 @@
     text-align: center;
     background: $backgroundGradient;
     font-family: 'Open Sans', sans-serif;
+
+    &.darkSide {
+      background: $darkSideGradient;
+    }
   }
 </style>

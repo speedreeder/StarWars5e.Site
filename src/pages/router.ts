@@ -3,12 +3,15 @@ import Router from 'vue-router'
 import HomePage from './HomePage.vue'
 import CreditsPage from './CreditsPage.vue'
 import AssetsPage from './AssetsPage.vue'
-import handbookRoute from './Handbook/router'
-import starshipRoutes from './Starships/router'
-import referenceRoutes from './Reference/router'
-import monsterRoutes from './Monsters/router'
 import SearchResultsPage from './SearchResultsPage.vue'
+<<<<<<< HEAD
 import LoginPage from './LoginPage.vue'
+=======
+import rulesRoutes from './Rules/router'
+import charactersRoutes from './Characters/router'
+import lootRoutes from './Loot/router'
+import starshipsRoutes from './Starships/router'
+>>>>>>> 6537171ede2f1bf3fbbb8d2541acf65cc0cdc332
 
 Vue.use(Router)
 
@@ -18,10 +21,10 @@ export default new Router({
       path: '/',
       component: HomePage
     },
-    handbookRoute,
-    starshipRoutes,
-    monsterRoutes,
-    ...referenceRoutes,
+    rulesRoutes,
+    charactersRoutes,
+    lootRoutes,
+    starshipsRoutes,
     {
       path: '/credits',
       component: CreditsPage
