@@ -9,6 +9,7 @@ import rulesRoutes from './Rules/router'
 import charactersRoutes from './Characters/router'
 import lootRoutes from './Loot/router'
 import starshipsRoutes from './Starships/router'
+import PrivacyPolicyPage from './PrivacyPolicyPage.vue'
 
 Vue.use(Router)
 
@@ -38,6 +39,10 @@ export default new Router({
     {
       path: '/login',
       component: LoginPage
+    },
+    {
+      path: '/privacy',
+      component: PrivacyPolicyPage
     }
   ],
   mode: 'history',

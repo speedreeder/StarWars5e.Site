@@ -8,7 +8,7 @@ export default class Auth extends VuexModule {
   auth: AuthType = {
     userName: '',
     accessTokenExpiration: 0,
-    acessTokenExpirationDate: new Date()
+    accessTokenExpirationDate: new Date()
   }
 
   @MutationAction({ mutate: ['auth'] })
@@ -20,6 +20,13 @@ export default class Auth extends VuexModule {
         ...auth,
         accessTokenExpirationDate: t
       }
+    }
+  }
+
+  @MutationAction({ mutate: ['auth'] })
+  async clearAuth () {
+    return {
+      auth: {}
     }
   }
 }

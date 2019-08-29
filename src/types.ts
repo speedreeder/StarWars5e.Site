@@ -320,7 +320,7 @@ export interface SearchResultType {
 export interface AuthType {
   userName: string,
   accessTokenExpiration: number,
-  acessTokenExpirationDate: Date
+  accessTokenExpirationDate: Date
 }
 
 export interface EnhancedItemType {
