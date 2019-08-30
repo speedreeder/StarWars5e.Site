@@ -19,8 +19,10 @@
     @Prop(String) readonly chapter!: string
 
     chapterMap: { [key: string]: string } = {
-      downtime: 'Downtime',
+      stepByStep: 'Step-By-Step Factions',
+      downtime: 'Entertainment and Downtime',
       factionsAndMembership: 'Factions and Membership',
+      abilityScores: 'Using Ability Scores',
       enhancedItems: 'Enhanced Items',
       modifiableItems: 'Modifiable Items',
       cyberneticAugmentations: 'Cybernetic Augmentations',
@@ -38,7 +40,7 @@
     }
 
     get blobName () {
-      return this.chapterMap[this.chapter] || 'Downtime'
+      return this.chapterMap[this.chapter] || 'Step-By-Step Factions'
     }
 
     get blob () {
