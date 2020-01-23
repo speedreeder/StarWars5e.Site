@@ -2,15 +2,17 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { StarshipEquipmentType } from '@/types'
+  import { StarshipEquipmentType } from '@/types/starshipTypes'
   import _ from 'lodash'
   import VueMarkdown from 'vue-markdown'
+  import BackButton from '@/components/BackButton.vue'
 
   const starshipEquipmentModule = namespace('starshipEquipment')
 
   @Component({
     components: {
       SearchTable,
+      BackButton,
       VueMarkdown
     }
   })
@@ -18,6 +20,7 @@
     @starshipEquipmentModule.State starshipEquipment!: StarshipEquipmentType[]
     @starshipEquipmentModule.Action fetchStarshipEquipment!: () => void
     initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Starship Equipment'
 
     created () {
       this.fetchStarshipEquipment()
@@ -29,7 +32,7 @@
         .map(starshipEquipment => ({
           ...starshipEquipment,
           id: starshipEquipment.name,
-          isExpandable: false
+          isExpandable: starshipEquipment.description
         })).value()
     }
 
@@ -51,9 +54,10 @@
 
 <template lang="pug">
   div
+    BackButton
     h1 Starship Equipment
     br
-    SearchTable(v-bind="{ headers, items, initialSearch }")
+    SearchTable(name="starshipEquipment", v-bind="{ headers, items, initialSearch, tableType }")
       template(v-slot:default="props")
         VueMarkdown(:source="props.item.description")
 </template>

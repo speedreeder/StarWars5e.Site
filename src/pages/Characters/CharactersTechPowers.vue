@@ -2,15 +2,17 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { PowerType } from '@/types'
+  import { PowerType } from '@/types/characterTypes'
   import _ from 'lodash'
   import VueMarkdown from 'vue-markdown'
+  import BackButton from '@/components/BackButton.vue'
 
   const powersModule = namespace('powers')
 
   @Component({
     components: {
       SearchTable,
+      BackButton,
       VueMarkdown
     }
   })
@@ -18,6 +20,7 @@
     @powersModule.State powers!: PowerType[]
     @powersModule.Action fetchPowers!: () => void
     initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Tech Powers'
 
     created () {
       this.fetchPowers()
@@ -79,9 +82,10 @@
 
 <template lang="pug">
   div
+    BackButton
     h1 Tech Powers
     br
-    SearchTable(v-bind="{ headers, items, initialSearch }")
+    SearchTable(name="TechPowers", v-bind="{ headers, items, initialSearch, tableType }")
       template(v-slot:default="props")
         VueMarkdown(:source="props.item.description")
 </template>

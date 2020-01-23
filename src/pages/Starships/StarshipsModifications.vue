@@ -2,22 +2,26 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { StarshipModificationType } from '@/types'
+  import { StarshipModificationType } from '@/types/starshipTypes'
   import _ from 'lodash'
   import VueMarkdownWithAnchors from '@/components/VueMarkdownWithAnchors.vue'
+  import BackButton from '@/components/BackButton.vue'
 
   const starshipModificationsModule = namespace('starshipModifications')
 
   @Component({
     components: {
       SearchTable,
+      BackButton,
       VueMarkdownWithAnchors
     }
   })
   export default class StarshipsModifications extends Vue {
     @starshipModificationsModule.State starshipModifications!: StarshipModificationType[]
     @starshipModificationsModule.Action fetchStarshipModifications!: () => void
+    @Prop({ type: Boolean, default: false }) readonly isInBook!: boolean
     initialSearch: string | (string | null)[] = ''
+    tableType: string = this.isInBook ? 'Modifications | Starships' : 'Starship Modifications'
 
     created () {
       this.fetchStarshipModifications()
@@ -55,9 +59,10 @@
 
 <template lang="pug">
   div
+    BackButton
     h1 Starship Modifications
     br
-    SearchTable(v-bind="{ headers, items, initialSearch }")
+    SearchTable(name="starshipModifications", v-bind="{ headers, items, initialSearch, tableType }")
       template(v-slot:default="props")
         VueMarkdownWithAnchors(:source="props.item.content")
 </template>

@@ -2,15 +2,17 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { FeatType } from '@/types'
+  import { FeatType } from '@/types/characterTypes'
   import _ from 'lodash'
   import VueMarkdown from 'vue-markdown'
+  import BackButton from '@/components/BackButton.vue'
 
   const archetypeModule = namespace('feats')
 
   @Component({
     components: {
       SearchTable,
+      BackButton,
       VueMarkdown
     }
   })
@@ -18,8 +20,8 @@
     @archetypeModule.State feats!: FeatType[]
     @archetypeModule.Action fetchFeats!: () => void
     @Prop({ type: Boolean, default: false }) readonly isInHandbook!: boolean
-
     initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Feats'
 
     created () {
       this.fetchFeats()
@@ -56,10 +58,10 @@
         },
         {
           text: 'Source',
-          value: 'contentType',
+          value: 'contentSource',
           render: _.startCase,
-          filterChoices: ['Core', 'Expanded Content'],
-          filterFunction: ({ contentType }: FeatType, filterValue: string) => _.startCase(contentType) === filterValue
+          filterChoices: ['PHB', 'EC'],
+          filterFunction: ({ contentSource }: FeatType, filterValue: string) => _.startCase(contentSource) === filterValue
         }
       ]
     }
@@ -68,9 +70,11 @@
 
 <template lang="pug">
   div
-    h1(v-if="!isInHandbook") Feats
+    template(v-if="!isInHandbook")
+      BackButton
+      h1 Feats
     br
-    SearchTable(v-bind="{ headers, items, initialSearch }")
+    SearchTable(name="Feats", v-bind="{ headers, items, initialSearch, tableType }")
       template(v-slot:default="props")
         VueMarkdown(:source="props.item.text")
 </template>

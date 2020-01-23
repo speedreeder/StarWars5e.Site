@@ -10,6 +10,7 @@ import charactersRoutes from './Characters/router'
 import lootRoutes from './Loot/router'
 import starshipsRoutes from './Starships/router'
 import PrivacyPolicyPage from './PrivacyPolicyPage.vue'
+import myContentRoutes from './MyContent/router'
 
 Vue.use(Router)
 
@@ -17,24 +18,37 @@ export default new Router({
   routes: [
     {
       path: '/',
-      component: HomePage
+      component: HomePage,
+      meta: {
+        title: 'Home'
+      }
     },
     rulesRoutes,
     charactersRoutes,
     lootRoutes,
     starshipsRoutes,
+    myContentRoutes,
     {
       path: '/credits',
-      component: CreditsPage
+      component: CreditsPage,
+      meta: {
+          title: 'Credits'
+      }
     },
     {
       path: '/assets',
-      component: AssetsPage
+      component: AssetsPage,
+      meta: {
+        title: 'Assets'
+      }
     },
     {
       path: '/searchResults',
       component: SearchResultsPage,
-      props: ({ query }) => query
+      props: ({ query }) => query,
+      meta: {
+        title: 'Search'
+      }
     },
     {
       path: '/login',

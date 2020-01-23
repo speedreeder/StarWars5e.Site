@@ -1,15 +1,17 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
-  import { ClassType, DeploymentType } from '@/types.ts'
+  import { DeploymentType } from '@/types/starshipTypes.ts'
   import VueMarkdown from 'vue-markdown'
   import Loading from '@/components/Loading.vue'
+  import BackButton from '@/components/BackButton.vue'
 
   const deploymentsModule = namespace('deployments')
 
   @Component({
     components: {
       VueMarkdown,
+      BackButton,
       Loading
     }
   })
@@ -23,6 +25,10 @@
       this.fetchDeployments()
     }
 
+    get title () {
+      return this.deploymentName + ' | Starships' + Vue.prototype.$titleSuffix
+    }
+
     get deploymentData () {
       return this.deployments.find(({ name }) => name === this.deploymentName)
     }
@@ -30,9 +36,12 @@
 </script>
 
 <template lang="pug">
-  div( v-if="deploymentData" ).text-xs-left
-    h1 {{ deploymentData.name }}
-    VueMarkdown(:source="deploymentData.flavorText")
-    VueMarkdown(:source="deploymentData.featureText")
-  Loading(v-else)
+  div
+    vue-headful(:title="title")
+    BackButton
+    div( v-if="deploymentData" ).text-left
+      h1 {{ deploymentData.name }}
+      VueMarkdown(:source="deploymentData.flavorText")
+      VueMarkdown(:source="deploymentData.featureText")
+    Loading(v-else)
 </template>

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
-  import { ClassType } from '@/types.ts'
+  import { ClassType } from '@/types/characterTypes.ts'
   import ClassDetail from '@/components/ClassDetail.vue'
 
   const classesModule = namespace('classes')
@@ -21,6 +21,10 @@
       this.fetchClasses()
     }
 
+    get title () {
+        return this.className + ' | Handbook' + Vue.prototype.$titleSuffix
+    }
+
     get classData () {
       return this.classes.find(({ name }) => name === this.className)
     }
@@ -28,5 +32,7 @@
 </script>
 
 <template lang="pug">
-  ClassDetail(v-bind="{ classData }")
+  div
+    vue-headful(:title="title")
+    ClassDetail(v-bind="{ classData }")
 </template>

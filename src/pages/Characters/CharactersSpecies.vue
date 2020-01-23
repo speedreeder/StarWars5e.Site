@@ -2,13 +2,15 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { SpeciesType, AbilitiesIncreasedType } from '@/types'
+  import { SpeciesType, AbilitiesIncreasedType } from '@/types/characterTypes'
   import _ from 'lodash'
+  import BackButton from '@/components/BackButton.vue'
 
   const speciesModule = namespace('species')
 
   @Component({
     components: {
+      BackButton,
       SearchTable
     }
   })
@@ -16,6 +18,8 @@
     @speciesModule.State species!: SpeciesType[]
     @speciesModule.Action fetchSpecies!: () => void
     @Prop({ type: Boolean, default: false }) readonly isInHandbook!: boolean
+    initialSearch: string | (string | null)[] = ''
+    tableType: string = this.isInHandbook ? 'Species | Handbook' : 'Species'
 
     numWordMap: { [key: string]: number } = {
       one: 1,
@@ -25,10 +29,11 @@
 
     created () {
       this.fetchSpecies()
+      this.initialSearch = this.$route.query.search
     }
 
     get items () {
-      const page = this.isInHandbook ? 'handbook' : 'characters'
+      const page = this.isInHandbook ? 'rules/handbook' : 'characters'
       return _(this.species)
         .filter(({ contentType }) => !this.isInHandbook || contentType === 'Core')
         .map(species => ({
@@ -66,10 +71,10 @@
         },
         {
           text: 'Source',
-          value: 'contentType',
+          value: 'contentSource',
           render: _.startCase,
-          filterChoices: ['Core', 'Expanded Content'],
-          filterFunction: ({ contentType }: SpeciesType, filterValue: string) => _.startCase(contentType) === filterValue
+          filterChoices: ['PHB', 'EC'],
+          filterFunction: ({ contentSource }: SpeciesType, filterValue: string) => _.startCase(contentSource) === filterValue
         }
       ]
     }
@@ -78,7 +83,9 @@
 
 <template lang="pug">
   div
-    h1(v-if="!isInHandbook") Species
+    template(v-if="!isInHandbook")
+      BackButton
+      h1 Species
     br
-    SearchTable(v-bind="{ headers, items }")
+    SearchTable(name="Species", v-bind="{ headers, items, initialSearch, tableType }")
 </template>

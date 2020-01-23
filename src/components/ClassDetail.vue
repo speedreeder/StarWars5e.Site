@@ -1,28 +1,32 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
-  import { ClassType } from '@/types.ts'
+  import { ClassType } from '@/types/characterTypes.ts'
   import VueMarkdown from 'vue-markdown'
   import LevelTable from '@/components/LevelTable.vue'
   import ImageWithLoading from '@/components/ImageWithLoading.vue'
+  import BackButton from '@/components/BackButton.vue'
 
   @Component({
     components: {
       VueMarkdown,
       LevelTable,
+      BackButton,
       ImageWithLoading
     }
   })
   export default class ClassDetail extends Vue {
     @Prop(Object) readonly classData!: ClassType
+    @Prop(Boolean) readonly isHidingBack!: boolean
 
     get isDark () {
-      return this.$vuetify.dark
+      return this.$vuetify.theme.dark
     }
   }
 </script>
 
 <template lang="pug">
-  div(v-if="classData").text-xs-left
+  div(v-if="classData").text-left
+    BackButton(v-if="!isHidingBack")
     h1 {{ classData.name }}
     ImageWithLoading(:src="classData.imageUrls[0]", :class="$style.portrait", height="350", width="350", contain).ma-2
     VueMarkdown(:source="classData.flavorText")
@@ -58,12 +62,12 @@
       you do so, you receive no equipment from your class and background, and instead roll for your starting wealth
       using the criteria below:
     div(:class="$style.variantWealth")
-      div.d-flex
+      div.d-flex.justify-space-between
         strong Class
-        strong.text-xs-right Funds
-      div(:class="[ $style.funds, { [$style.darkSide]: isDark } ]").d-flex
+        strong.text-right Funds
+      div(:class="[ $style.funds, { [$style.darkSide]: isDark } ]").d-flex.justify-space-between
         div {{ classData.name }}
-        div.text-xs-right {{ classData.startingWealthVariant }}
+        div.text-right {{ classData.startingWealthVariant }}
     br
     VueMarkdown(:source="classData.classFeatureText")
     VueMarkdown(v-if="classData.classFeatureText2", :source="classData.classFeatureText2")

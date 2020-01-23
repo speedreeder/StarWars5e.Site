@@ -2,15 +2,17 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { ArmorType } from '@/types'
+  import { ArmorType } from '@/types/lootTypes'
   import _ from 'lodash'
   import VueMarkdown from 'vue-markdown'
+  import BackButton from '@/components/BackButton.vue'
 
   const armorModule = namespace('armor')
 
   @Component({
     components: {
       SearchTable,
+      BackButton,
       VueMarkdown
     }
   })
@@ -18,6 +20,7 @@
     @armorModule.State armor!: ArmorType[]
     @armorModule.Action fetchArmor!: () => void
     initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Armor'
 
     created () {
       this.fetchArmor()
@@ -47,7 +50,7 @@
         { text: 'AC', value: 'ac' },
         { text: 'Strength', value: 'strengthRequirement' },
         { text: 'Stealth', value: 'stealthDisadvantage', render: (isDisadvantage: boolean) => isDisadvantage ? 'Disadvantage' : '-' },
-        { text: 'Source', value: 'contentType', render: _.startCase }
+        { text: 'Source', value: 'contentSource', render: _.startCase }
       ]
     }
   }
@@ -55,9 +58,10 @@
 
 <template lang="pug">
   div
+    BackButton
     h1 Armor
     br
-    SearchTable(v-bind="{ headers, items, initialSearch }")
+    SearchTable(name="Armor", v-bind="{ headers, items, initialSearch, tableType }")
       template(v-slot:default="props")
         VueMarkdown(:source="props.item.description")
 </template>

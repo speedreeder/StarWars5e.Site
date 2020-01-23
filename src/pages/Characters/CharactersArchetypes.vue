@@ -2,23 +2,28 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { ArchetypeType } from '@/types'
+  import { ArchetypeType } from '@/types/characterTypes'
   import _ from 'lodash'
+  import BackButton from '@/components/BackButton.vue'
 
   const archetypeModule = namespace('archetypes')
 
   @Component({
     components: {
-      SearchTable
+      SearchTable,
+      BackButton
     }
   })
   export default class CharactersArchetypes extends Vue {
     @archetypeModule.State archetypes!: ArchetypeType[]
     @archetypeModule.Action fetchArchetypes!: () => void
     @Prop({ type: Boolean, default: false }) readonly isInHandbook!: boolean
+    initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Archetypes'
 
     created () {
       this.fetchArchetypes()
+      this.initialSearch = this.$route.query.search
     }
 
     get items () {
@@ -35,7 +40,8 @@
       return [
         {
           text: 'Name',
-          value: 'name'
+          value: 'name',
+          render: (name: string) => name.replace(/\ufffd/g, '-')
         },
         {
           text: 'Class',
@@ -45,10 +51,10 @@
         },
         {
           text: 'Source',
-          value: 'contentType',
+          value: 'contentSource',
           render: _.startCase,
-          filterChoices: ['Core', 'Expanded Content'],
-          filterFunction: ({ contentType }: ArchetypeType, filterValue: string) => _.startCase(contentType) === filterValue
+          filterChoices: ['PHB', 'EC'],
+          filterFunction: ({ contentSource }: ArchetypeType, filterValue: string) => _.startCase(contentSource) === filterValue
         }
       ]
     }
@@ -57,7 +63,9 @@
 
 <template lang="pug">
   div
-    h1(v-if="!isInHandbook") Archetypes
+    template(v-if="!isInHandbook")
+      BackButton
+      h1 Archetypes
     br
-    SearchTable(v-bind="{ headers, items }")
+    SearchTable(name="Archetypes", v-bind="{ headers, items, initialSearch, tableType }")
 </template>

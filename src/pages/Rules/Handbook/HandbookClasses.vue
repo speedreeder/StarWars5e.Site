@@ -4,7 +4,7 @@
   import VueMarkdown from 'vue-markdown'
   import CardSet from '@/components/CardSet.vue'
   import Loading from '@/components/Loading.vue'
-  import { ClassType } from '@/types'
+  import { ClassType } from '@/types/characterTypes'
 
   const classesModule = namespace('classes')
   const blobsModule = namespace('blobs')
@@ -46,12 +46,12 @@
 
 <template lang="pug">
   div
-    VueMarkdown(:source="blob").text-xs-left
+    VueMarkdown(:source="blob").text-left
     CardSet(:cards="classesWithLinks")
       template(v-slot="{ card }")
         v-card-text(primary-title)
           h3 {{ card.name }}
-          div.text-xs-left
+          div.text-left
             p {{ card.summary }}
             p.ma-0 #[strong Hit Die:] 1d{{ card.hitDiceDieType }}
             p.ma-0 #[strong Primary Ability:] {{ card.primaryAbility }}

@@ -29,19 +29,28 @@ export default {
     },
     {
       path: 'classes',
-      component: HandbookClasses
+      component: HandbookClasses,
+      meta: {
+        title: 'Classes | Handbook'
+      }
     },
     {
       path: 'casting',
       component: HandbookCasting
     },
     {
-      path: 'forcePowers',
-      component: CharactersForcePowers
+      path: 'casting/forcePowers',
+      component: CharactersForcePowers,
+      meta: {
+        title: 'Force Powers | Handbook'
+      }
     },
     {
-      path: 'techPowers',
-      component: CharactersTechPowers
+      path: 'casting/techPowers',
+      component: CharactersTechPowers,
+      meta: {
+        title: 'Tech Powers | Handbook'
+      }
     },
     {
       path: 'backgrounds',

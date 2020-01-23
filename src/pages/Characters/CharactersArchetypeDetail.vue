@@ -1,11 +1,12 @@
 <script lang="ts">
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
-  import { ArchetypeType } from '@/types.ts'
+  import { ArchetypeType } from '@/types/characterTypes.ts'
   import VueMarkdown from 'vue-markdown'
   import LevelTable from '@/components/LevelTable.vue'
   import Loading from '@/components/Loading.vue'
   import _ from 'lodash'
+  import BackButton from '@/components/BackButton.vue'
 
   const archetypeModule = namespace('archetypes')
 
@@ -13,6 +14,7 @@
     components: {
       VueMarkdown,
       LevelTable,
+      BackButton,
       Loading
     }
   })
@@ -21,9 +23,14 @@
     @archetypeModule.Action fetchArchetypes!: () => void
 
     @Prop(String) readonly archetypeName!: string
+    @Prop(Boolean) readonly isHidingBack!: boolean
 
     created () {
       this.fetchArchetypes()
+    }
+
+    get title () {
+        return this.archetypeName + Vue.prototype.$titleSuffix
     }
 
     get archetype () {
@@ -53,9 +60,12 @@
 </script>
 
 <template lang="pug">
-  div( v-if="archetype" ).text-xs-left
-    h1 {{ archetype.name }}
-    VueMarkdown(:source="archetype.text")
-    LevelTable(:title="archetype.name", :levels="correctedLevels")
-  Loading(v-else)
+  div
+    vue-headful(v-if="!isHidingBack", :title="title")
+    BackButton(v-if="!isHidingBack")
+    div(v-if="archetype").text-left
+      h1 {{ archetype.name.replace(/\ufffd/g, '-') }}
+      VueMarkdown(:source="archetype.text")
+      LevelTable(:title="archetype.name", :levels="correctedLevels")
+    Loading(v-else)
 </template>

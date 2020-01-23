@@ -2,15 +2,17 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { GearType } from '@/types'
+  import { GearType } from '@/types/lootTypes'
   import _ from 'lodash'
   import VueMarkdown from 'vue-markdown'
+  import BackButton from '@/components/BackButton.vue'
 
   const gearModule = namespace('gear')
 
   @Component({
     components: {
       SearchTable,
+      BackButton,
       VueMarkdown
     }
   })
@@ -18,6 +20,7 @@
     @gearModule.State gear!: GearType[]
     @gearModule.Action fetchGear!: () => void
     initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Adventuring Gear'
 
     created () {
       this.fetchGear()
@@ -48,10 +51,11 @@
         { text: 'Weight', value: 'weight' },
         {
           text: 'Source',
-          value: 'contentType',
+          value: 'contentSource',
           render: _.startCase,
-          filterChoices: ['Core', 'Expanded Content'],
-          filterFunction: ({ contentType }: GearType, filterValue: string) => _.startCase(contentType) === filterValue }
+          filterChoices: ['PHB', 'EC'],
+          filterFunction: ({ contentSource }: GearType, filterValue: string) => _.startCase(contentSource) === filterValue
+        }
       ]
     }
   }
@@ -59,9 +63,10 @@
 
 <template lang="pug">
   div
+    BackButton
     h1 Gear
     br
-    SearchTable(v-bind="{ headers, items, initialSearch }")
+    SearchTable(name="Gear", v-bind="{ headers, items, initialSearch, tableType }")
       template(v-slot:default="props")
         VueMarkdown(:source="props.item.description")
 </template>

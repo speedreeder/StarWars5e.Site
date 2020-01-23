@@ -2,7 +2,7 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import VueMarkdown from 'vue-markdown'
-  import { DeploymentType } from '@/types.ts'
+  import { DeploymentType } from '@/types/starshipTypes.ts'
   import CardSet from '@/components/CardSet.vue'
   import Loading from '@/components/Loading.vue'
 
@@ -42,12 +42,12 @@
 
 <template lang="pug">
   div
-    VueMarkdown(:source="blob").text-xs-left
+    VueMarkdown(:source="blob").text-left
     CardSet(:cards="deploymentsWithLinks")
       template(v-slot="{ card }")
         v-card-text(primary-title)
           h3 {{ card.name }}
-          div.text-xs-left
+          div.text-left
             p {{ card.description }}
     Loading(v-if="!blob || !deployments.length")
 </template>

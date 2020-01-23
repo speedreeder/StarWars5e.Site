@@ -2,13 +2,36 @@
   import { Component, Prop, Vue } from 'vue-property-decorator'
   import { namespace } from 'vuex-class'
   import SearchTable from '@/components/SearchTable.vue'
-  import { BackgroundType } from '@/types'
+  import { BackgroundType } from '@/types/characterTypes'
   import _ from 'lodash'
+  import BackButton from '@/components/BackButton.vue'
 
   const backgroundModule = namespace('backgrounds')
 
+  const skills = [
+    'Athletics',
+    'Acrobatics',
+    'Sleight of Hand',
+    'Stealth',
+    'Investigation',
+    'Lore',
+    'Nature',
+    'Piloting',
+    'Technology',
+    'Animal Handling',
+    'Insight',
+    'Medicine',
+    'Perception',
+    'Survival',
+    'Deception',
+    'Intimidation',
+    'Performance',
+    'Persuasion'
+  ]
+
   @Component({
     components: {
+      BackButton,
       SearchTable
     }
   })
@@ -16,9 +39,12 @@
     @backgroundModule.State backgrounds!: BackgroundType[]
     @backgroundModule.Action fetchBackgrounds!: () => void
     @Prop({ type: Boolean, default: false }) readonly isInHandbook!: boolean
+    initialSearch: string | (string | null)[] = ''
+    tableType: string = 'Backgrounds'
 
     created () {
       this.fetchBackgrounds()
+      this.initialSearch = this.$route.query.search
     }
 
     get items () {
@@ -38,17 +64,19 @@
           value: 'name'
         },
         {
-          text: 'Feature',
+          text: 'Skill Proficiency',
           value: 'skillProficiencies',
-          filterChoices: ['Deception', 'Lore'],
-          filterFunction: ({ skillProficiencies }: BackgroundType, filterValue: string) => _.includes(skillProficiencies, filterValue)
+          isMultiSelect: true,
+          filterChoices: skills,
+          filterFunction: ({ skillProficiencies }: BackgroundType, filterValue: string[]) =>
+            filterValue.every(skill => skillProficiencies.includes(skill))
         },
         {
           text: 'Source',
-          value: 'contentType',
+          value: 'contentSource',
           render: _.startCase,
-          filterChoices: ['Core', 'Expanded Content'],
-          filterFunction: ({ contentType }: BackgroundType, filterValue: string) => _.startCase(contentType) === filterValue
+          filterChoices: ['PHB', 'EC'],
+          filterFunction: ({ contentSource }: BackgroundType, filterValue: string) => _.startCase(contentSource) === filterValue
         }
       ]
     }
@@ -57,7 +85,9 @@
 
 <template lang="pug">
   div
-    h1(v-if="!isInHandbook") Backgrounds
+    template(v-if="!isInHandbook")
+      BackButton
+      h1 Backgrounds
     br
-    SearchTable(v-bind="{ headers, items }")
+    SearchTable(name="Backgrounds", v-bind="{ headers, items, initialSearch, tableType }")
 </template>
