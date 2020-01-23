@@ -3,7 +3,7 @@
   import { namespace } from 'vuex-class'
   import Loading from '@/components/Loading.vue'
   import axios from 'axios'
-  import { AuthType } from '../types'
+  import { AuthType } from '../types/utilityTypes'
   import Cookies from 'js-cookie'
 
   const authModule = namespace('auth')

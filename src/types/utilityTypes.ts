@@ -17,3 +17,9 @@ export interface CharacterValidationType {
   isValid: boolean,
   message: string
 }
+
+export interface AuthType {
+  userName: string,
+  accessTokenExpiration: number,
+  accessTokenExpirationDate: Date
+}

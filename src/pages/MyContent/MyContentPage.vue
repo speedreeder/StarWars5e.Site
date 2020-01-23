@@ -7,7 +7,7 @@
       RoutesList
     }
   })
-  export default class StarshipsPage extends Vue {
+  export default class MyContentPage extends Vue {
     get categories () {
       return [
         {

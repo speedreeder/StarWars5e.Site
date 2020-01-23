@@ -1,7 +1,5 @@
-import axios from 'axios'
 import { Module, VuexModule, MutationAction } from 'vuex-module-decorators'
-import { AuthType } from '@/types'
-import Cookies from 'js-cookie'
+import { AuthType } from '@/types/utilityTypes'
 
 @Module({ namespaced: true, name: 'auth' })
 export default class Auth extends VuexModule {

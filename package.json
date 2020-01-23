@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@types/axios": "^0.14.0",
+    "@types/file-saver": "^2.0.1",
     "@types/js-cookie": "^2.2.2",
     "@types/lodash": "^4.14.123",
     "@types/mathjs": "^5.0.1",
