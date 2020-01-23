@@ -29,6 +29,7 @@ import character from './modules/character'
 import characterAdvancements from './modules/characterAdvancements'
 import conditions from './modules/conditions'
 import skills from './modules/skills'
+import user from './modules/user'
 
 Vue.use(Vuex)
 
@@ -60,6 +61,7 @@ export default new Vuex.Store({
     starshipSizes,
     starshipWeapons,
     ui,
+    user,
     ventures,
     weapons,
     weaponProperties

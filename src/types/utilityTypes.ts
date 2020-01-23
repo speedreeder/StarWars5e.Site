@@ -23,3 +23,10 @@ export interface AuthType {
   accessTokenExpiration: number,
   accessTokenExpirationDate: Date
 }
+
+export interface UserType {
+  userName: string,
+  mostRecentAuthType: string,
+  lastLoginTimeUtc: Date,
+  registrationDateUtc: Date
+}
