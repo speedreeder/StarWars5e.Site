@@ -68,7 +68,7 @@ Vue.use(VueAuthenticate, {
       url: '/api/ExternalAuth/google'
     },
     facebook: {
-      clientId: '2142102082765192',
+      clientId: '214659266224660',
       redirectUri: 'http://localhost:8080/login',
       url: '/api/ExternalAuth/facebook'
     },
